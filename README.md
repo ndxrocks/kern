@@ -1,6 +1,4 @@
-<img src="kern/logo.svg" alt="Kern logo" width="40" />
-
-# Kern
+<img src="kern/docs/assets/kern.png" alt="Kern logo" width="180" />
 
 Agent framework optimized for small models (1-7B parameters). Kern generates simple fill-in-the-blanks JSON templates instead of complex JSON Schema, so small models actually produce valid structured output.
 
