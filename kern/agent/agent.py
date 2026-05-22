@@ -303,7 +303,7 @@ class Agent:
     # Use model enforced structured_outputs if supported (e.g. OpenAIChat)
     structured_outputs: Optional[bool] = None
     # Intead of providing the model with the Pydantic output schema, add a JSON description of the output schema to the system message instead.
-    use_json_mode: bool = False
+    use_json_mode: bool = True
     # Save the response to a file
     save_response_to_file: Optional[str] = None
 
@@ -471,7 +471,7 @@ class Agent:
         output_model: Optional[Union[Model, str]] = None,
         output_model_prompt: Optional[str] = None,
         structured_outputs: Optional[bool] = None,
-        use_json_mode: bool = False,
+        use_json_mode: bool = True,
         save_response_to_file: Optional[str] = None,
         followups: bool = False,
         num_followups: int = 3,

@@ -930,6 +930,8 @@ def convert_response_to_structured_format(
         # If the output schema is a dict, do not convert it into a BaseModel
         if isinstance(output_schema, dict):
             if isinstance(run_response.content, str):
+                if not run_response.content.strip():
+                    return
                 parsed_dict = parse_response_dict_str(run_response.content)
                 if parsed_dict is not None:
                     run_response.content = parsed_dict
@@ -948,6 +950,9 @@ def convert_response_to_structured_format(
         # If the output schema is a Pydantic model and parse_response is True, parse it into a BaseModel
         elif not isinstance(run_response.content, output_schema):
             if isinstance(run_response.content, str) and agent.parse_response:
+                # Skip parsing if content is empty (e.g. model made a tool call instead)
+                if not run_response.content.strip():
+                    return
                 try:
                     structured_output = parse_response_model_str(run_response.content, output_schema)
 
