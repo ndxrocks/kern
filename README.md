@@ -1,4 +1,14 @@
-<img src="kern/docs/assets/kern.png" alt="Kern logo" width="180" />
+<div align="center" id="top">
+    <picture>
+      <source width="100" media="(prefers-color-scheme: dark)" srcset="kern/docs/assets/kern-dark.png">
+      <source width="100" media="(prefers-color-scheme: light)" srcset="kern/docs/assets/kern-light.png">
+      <img width="100" src="kern/docs/assets/kern-light.png" alt="Agno">
+    </picture>
+</div>
+
+<p align="center">
+  Small Models. Big Impact.<br/>
+</p>
 
 Agent framework optimized for small models (1-7B parameters). Kern generates simple fill-in-the-blanks JSON templates instead of complex JSON Schema, so small models actually produce valid structured output.
 
@@ -89,17 +99,17 @@ result = agent.run("Review 'Dune' by Frank Herbert")
 
 Kern supports any OpenAI-compatible model provider:
 
-| Provider | Install | Usage |
-|----------|---------|-------|
-| OpenAI | `kern[openai]` | `from kern.models.openai import OpenAIChat` |
-| Anthropic | `kern[anthropic]` | `from kern.models.anthropic import Claude` |
-| Google Gemini | `kern[google]` | `from kern.models.google import Gemini` |
-| Ollama | `kern[ollama]` | `from kern.models.ollama import Ollama` |
-| Groq | `kern[groq]` | `from kern.models.groq import Groq` |
-| Cerebras | `kern[cerebras]` | `from kern.models.cerebras import Cerebras` |
-| Mistral | `kern[mistral]` | `from kern.models.mistral import MistralChat` |
-| Azure | `kern[azure]` | `from kern.models.azure import AzureOpenAIChat` |
-| Any OpenAI-compatible | — | `OpenAIChat(base_url="...", api_key="...")` |
+| Provider              | Install           | Usage                                           |
+| --------------------- | ----------------- | ----------------------------------------------- |
+| OpenAI                | `kern[openai]`    | `from kern.models.openai import OpenAIChat`     |
+| Anthropic             | `kern[anthropic]` | `from kern.models.anthropic import Claude`      |
+| Google Gemini         | `kern[google]`    | `from kern.models.google import Gemini`         |
+| Ollama                | `kern[ollama]`    | `from kern.models.ollama import Ollama`         |
+| Groq                  | `kern[groq]`      | `from kern.models.groq import Groq`             |
+| Cerebras              | `kern[cerebras]`  | `from kern.models.cerebras import Cerebras`     |
+| Mistral               | `kern[mistral]`   | `from kern.models.mistral import MistralChat`   |
+| Azure                 | `kern[azure]`     | `from kern.models.azure import AzureOpenAIChat` |
+| Any OpenAI-compatible | —                 | `OpenAIChat(base_url="...", api_key="...")`     |
 
 ## Agents
 
@@ -185,7 +195,7 @@ class Recipe(BaseModel):
 Template sent to the model:
 
 ```json
-{"name": "string", "ingredients": ["string"], "cook_time_minutes": "integer"}
+{ "name": "string", "ingredients": ["string"], "cook_time_minutes": "integer" }
 ```
 
 ### Nested Models
@@ -204,7 +214,10 @@ class Person(BaseModel):
 Template:
 
 ```json
-{"name": "string", "address": {"street": "string", "city": "string", "zip_code": "string"}}
+{
+  "name": "string",
+  "address": { "street": "string", "city": "string", "zip_code": "string" }
+}
 ```
 
 ### Union Types
@@ -226,7 +239,7 @@ class Page(BaseModel):
 Template — both alternatives shown flat:
 
 ```json
-{"blocks": [{"text": "string"}, {"code": "string", "language": "string"}]}
+{ "blocks": [{ "text": "string" }, { "code": "string", "language": "string" }] }
 ```
 
 ### Literal Enums
@@ -260,7 +273,7 @@ Template includes a separate descriptions block so the model knows what each fie
 
 Small models produce malformed JSON — missing quotes, trailing commas, broken escapes. Kern fixes it automatically:
 
-```python
+````python
 from kern.repair import extract_json
 
 # Handles markdown code blocks, leading text, LaTeX, malformed JSON
@@ -268,10 +281,13 @@ data = extract_json("""
 Here's the result:
 ```json
 {"title": "Hello World", "items": [1, 2, 3,]}
-```
+````
+
 """)
+
 # {"title": "Hello World", "items": [1, 2, 3]}
-```
+
+````
 
 ### LaTeX Protection
 
@@ -282,7 +298,7 @@ from kern.repair import extract_json
 
 data = extract_json('{"formula": "\\frac{1}{2} + \\theta"}')
 # Parsed correctly — LaTeX preserved
-```
+````
 
 ## Tools
 
