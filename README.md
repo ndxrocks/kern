@@ -53,7 +53,7 @@ class BookReview(BaseModel):
 
 agent = Agent(
     model=OpenAIChat(id="gpt-4o-mini"),
-    response_model=BookReview,
+    output_schema=BookReview,
 )
 
 result = agent.run("Review 'The Hitchhiker's Guide to the Galaxy'")
@@ -81,7 +81,7 @@ model = OpenAIChat(
     api_key="not-needed",                # placeholder for local inference
 )
 
-agent = Agent(model=model, response_model=BookReview)
+agent = Agent(model=model, output_schema=BookReview)
 result = agent.run("Review 'Dune' by Frank Herbert")
 ```
 
