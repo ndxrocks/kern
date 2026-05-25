@@ -1,5 +1,5 @@
 [project]
-name = "kern"
+name = "kern-ai"
 version = "0.1.0"
 description = "Agent framework optimized for small models — template-based structured output, JSON repair, and LaTeX protection."
 requires-python = ">=3.11"
@@ -123,68 +123,68 @@ markdown = ["unstructured", "markdown", "aiofiles"]
 # --- Bundle extras ---
 
 models = [
-    "kern[anthropic]",
-    "kern[azure]",
-    "kern[cerebras]",
-    "kern[cohere]",
-    "kern[google]",
-    "kern[groq]",
-    "kern[ibm]",
-    "kern[mistral]",
-    "kern[ollama]",
-    "kern[openai]",
+    "kern-ai[anthropic]",
+    "kern-ai[azure]",
+    "kern-ai[cerebras]",
+    "kern-ai[cohere]",
+    "kern-ai[google]",
+    "kern-ai[groq]",
+    "kern-ai[ibm]",
+    "kern-ai[mistral]",
+    "kern-ai[ollama]",
+    "kern-ai[openai]",
 ]
 
 tools = [
-    "kern[ddg]",
-    "kern[exa]",
-    "kern[firecrawl]",
-    "kern[tavily]",
-    "kern[github]",
-    "kern[mcp]",
-    "kern[yfinance]",
-    "kern[youtube]",
-    "kern[newspaper]",
-    "kern[matplotlib]",
-    "kern[browserbase]",
+    "kern-ai[ddg]",
+    "kern-ai[exa]",
+    "kern-ai[firecrawl]",
+    "kern-ai[tavily]",
+    "kern-ai[github]",
+    "kern-ai[mcp]",
+    "kern-ai[yfinance]",
+    "kern-ai[youtube]",
+    "kern-ai[newspaper]",
+    "kern-ai[matplotlib]",
+    "kern-ai[browserbase]",
 ]
 
 storage = [
-    "kern[sql]",
-    "kern[postgres]",
-    "kern[sqlite]",
-    "kern[redis]",
-    "kern[mongo]",
+    "kern-ai[sql]",
+    "kern-ai[postgres]",
+    "kern-ai[sqlite]",
+    "kern-ai[redis]",
+    "kern-ai[mongo]",
 ]
 
 vectordbs = [
-    "kern[pgvector]",
-    "kern[chromadb]",
-    "kern[lancedb]",
-    "kern[qdrant]",
-    "kern[milvusdb]",
-    "kern[pinecone]",
+    "kern-ai[pgvector]",
+    "kern-ai[chromadb]",
+    "kern-ai[lancedb]",
+    "kern-ai[qdrant]",
+    "kern-ai[milvusdb]",
+    "kern-ai[pinecone]",
 ]
 
 knowledge = [
-    "kern[pdf]",
-    "kern[docx]",
-    "kern[csv]",
-    "kern[markdown]",
+    "kern-ai[pdf]",
+    "kern-ai[docx]",
+    "kern-ai[csv]",
+    "kern-ai[markdown]",
 ]
 
 all = [
-    "kern[models]",
-    "kern[tools]",
-    "kern[storage]",
-    "kern[vectordbs]",
-    "kern[knowledge]",
-    "kern[opentelemetry]",
+    "kern-ai[models]",
+    "kern-ai[tools]",
+    "kern-ai[storage]",
+    "kern-ai[vectordbs]",
+    "kern-ai[knowledge]",
+    "kern-ai[opentelemetry]",
 ]
 
 [project.urls]
-Homepage = "https://github.com/satadeep/kern"
-Repository = "https://github.com/satadeep/kern"
+Homepage = "https://github.com/ndxrocks/kern"
+Repository = "https://github.com/ndxrocks/kern"
 
 [build-system]
 requires = ["setuptools>=75.0"]
