@@ -446,6 +446,38 @@ class Workflow:
 
         return parameters
 
+    def visualize(
+        self,
+        direction: str = "TD",
+        color: str = "default",
+        ink_server: Optional[str] = None,
+    ):
+        """Generate a Mermaid flowchart diagram of this workflow.
+
+        Args:
+            direction: ``"TD"`` (top-down) or ``"LR"`` (left-right).
+            color: Color flavor — ``"default"``, ``"monotone"``, or ``"black"``.
+            ink_server: Base URL of a mermaid-ink server. Falls back to the
+                ``MERMAID_INK_SERVER`` env var, then ``https://mermaid.ink``.
+
+        Returns:
+            A :class:`WorkflowVisualization` object with ``to_mermaid()``,
+            ``to_svg()``, ``to_png()``, and ``show()`` methods.
+        """
+        from kern.visualize import WorkflowVisualization, generate_mermaid
+
+        mermaid_text = generate_mermaid(
+            steps=self.steps,
+            workflow_name=self.name,
+            direction=direction,
+            color=color,
+        )
+        return WorkflowVisualization(
+            mermaid_text=mermaid_text,
+            workflow_name=self.name,
+            ink_server=ink_server,
+        )
+
     def initialize_workflow(self):
         if self.id is None:
             self.set_id()
