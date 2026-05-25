@@ -11,12 +11,12 @@ from kern.utils.log import logger
 
 class KernAPISettings(BaseSettings):
     app_name: str = "kern"
-    app_version: str = metadata.version("kern")
+    app_version: str = metadata.version("kern-ai")
 
     api_runtime: str = "prd"
     alpha_features: bool = False
 
-    api_url: str = "https://os-api.agno.com"
+    api_url: str = "https://api.kern.dev"
 
     model_config = SettingsConfigDict(env_prefix="KERN_")
 
@@ -40,9 +40,9 @@ class KernAPISettings(BaseSettings):
                 return "http://host.docker.internal:7070"
             return "http://localhost:7070"
         elif api_runtime == "stg":
-            return "https://api-stg.agno.com"
+            return "https://api-stg.kern.dev"
         else:
-            return "https://os-api.agno.com"
+            return "https://api.kern.dev"
 
     def gate_alpha_feature(self):
         if not self.alpha_features:

@@ -10,23 +10,23 @@
   Small Models. Big Impact.<br/>
 </p>
 
-Agent framework optimized for small models (1-7B parameters). Kern generates simple fill-in-the-blanks JSON templates instead of complex JSON Schema, so small models actually produce valid structured output.
+Agent framework for small models (1–7B parameters). Kern generates simple fill-in-the-blanks JSON templates instead of complex JSON Schema, so small models actually produce valid structured output.
 
 ## Install
 
 ```bash
-pip install kern
+pip install kern-ai
 ```
 
 With extras:
 
 ```bash
-pip install kern[openai]       # OpenAI-compatible models
-pip install kern[ollama]       # Ollama
-pip install kern[anthropic]    # Claude
-pip install kern[google]       # Gemini
-pip install kern[ddg,mcp]      # DuckDuckGo search + MCP tools
-pip install kern[all]          # Everything
+pip install kern-ai[openai]       # OpenAI-compatible models
+pip install kern-ai[ollama]       # Ollama
+pip install kern-ai[anthropic]    # Claude
+pip install kern-ai[google]       # Gemini
+pip install kern-ai[ddg,mcp]      # DuckDuckGo search + MCP tools
+pip install kern-ai[all]          # Everything
 ```
 
 ## Quick Start
@@ -101,14 +101,14 @@ Kern supports any OpenAI-compatible model provider:
 
 | Provider              | Install           | Usage                                           |
 | --------------------- | ----------------- | ----------------------------------------------- |
-| OpenAI                | `kern[openai]`    | `from kern.models.openai import OpenAIChat`     |
-| Anthropic             | `kern[anthropic]` | `from kern.models.anthropic import Claude`      |
-| Google Gemini         | `kern[google]`    | `from kern.models.google import Gemini`         |
-| Ollama                | `kern[ollama]`    | `from kern.models.ollama import Ollama`         |
-| Groq                  | `kern[groq]`      | `from kern.models.groq import Groq`             |
-| Cerebras              | `kern[cerebras]`  | `from kern.models.cerebras import Cerebras`     |
-| Mistral               | `kern[mistral]`   | `from kern.models.mistral import MistralChat`   |
-| Azure                 | `kern[azure]`     | `from kern.models.azure import AzureOpenAIChat` |
+| OpenAI                | `kern-ai[openai]`    | `from kern.models.openai import OpenAIChat`     |
+| Anthropic             | `kern-ai[anthropic]` | `from kern.models.anthropic import Claude`      |
+| Google Gemini         | `kern-ai[google]`    | `from kern.models.google import Gemini`         |
+| Ollama                | `kern-ai[ollama]`    | `from kern.models.ollama import Ollama`         |
+| Groq                  | `kern-ai[groq]`      | `from kern.models.groq import Groq`             |
+| Cerebras              | `kern-ai[cerebras]`  | `from kern.models.cerebras import Cerebras`     |
+| Mistral               | `kern-ai[mistral]`   | `from kern.models.mistral import MistralChat`   |
+| Azure                 | `kern-ai[azure]`     | `from kern.models.azure import AzureOpenAIChat` |
 | Any OpenAI-compatible | —                 | `OpenAIChat(base_url="...", api_key="...")`     |
 
 ## Agents
@@ -136,7 +136,6 @@ agent = Agent(
     model=model,
     tools=[DuckDuckGoTools()],
     instructions="Search the web to answer questions.",
-    show_tool_calls=True,
 )
 
 result = agent.run("What's the latest news about quantum computing?")
@@ -304,14 +303,14 @@ data = extract_json('{"formula": "\\frac{1}{2} + \\theta"}')
 
 ```python
 from kern.tools import (
-    DuckDuckGoTools,    # pip install kern[ddg]
-    ExaTools,           # pip install kern[exa]
-    FirecrawlTools,     # pip install kern[firecrawl]
-    TavilyTools,        # pip install kern[tavily]
-    GitHubTools,        # pip install kern[github]
-    MCPTools,           # pip install kern[mcp]
-    YFinanceTools,      # pip install kern[yfinance]
-    NewspaperTools,     # pip install kern[newspaper]
+    DuckDuckGoTools,    # pip install kern-ai[ddg]
+    ExaTools,           # pip install kern-ai[exa]
+    FirecrawlTools,     # pip install kern-ai[firecrawl]
+    TavilyTools,        # pip install kern-ai[tavily]
+    GitHubTools,        # pip install kern-ai[github]
+    MCPTools,           # pip install kern-ai[mcp]
+    YFinanceTools,      # pip install kern-ai[yfinance]
+    NewspaperTools,     # pip install kern-ai[newspaper]
     CalculatorTools,    # built-in
     PythonTools,        # built-in
     FileTools,          # built-in
@@ -339,7 +338,7 @@ agent = Agent(model=model, tools=[MyTools()])
 
 ```python
 from kern.agent import Agent
-from kern.storage.agent.postgres import PgAgentStorage  # kern[postgres]
+from kern.storage.agent.postgres import PgAgentStorage  # kern-ai[postgres]
 
 agent = Agent(
     model=model,
@@ -356,7 +355,7 @@ Supported: Postgres, SQLite, Redis, MongoDB, GCS, Firestore, MySQL.
 
 ```python
 from kern.knowledge.text import TextKnowledgeBase
-from kern.vectordb.pgvector import PgVector  # kern[pgvector]
+from kern.vectordb.pgvector import PgVector  # kern-ai[pgvector]
 
 knowledge = TextKnowledgeBase(
     vector_db=PgVector(

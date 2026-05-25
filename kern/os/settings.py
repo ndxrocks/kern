@@ -35,11 +35,11 @@ class KernAPISettings(BaseSettings):
         valid_cors.extend(
             [
                 "http://localhost:3000",
-                "https://agno.com",
-                "https://www.agno.com",
-                "https://app.agno.com",
-                "https://os-stg.agno.com",
-                "https://os.agno.com",
+                "https://kern.dev",
+                "https://www.kern.dev",
+                "https://app.kern.dev",
+                "https://os-stg.kern.dev",
+                "https://os.kern.dev",
             ]
         )
 

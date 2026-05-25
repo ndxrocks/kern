@@ -4,9 +4,9 @@ from os import getenv
 from typing import Any, Dict, Optional
 
 import httpx
-from agno.exceptions import ModelAuthenticationError
-from agno.models.openai.like import OpenAILike
-from agno.utils.log import log_debug
+from kern.exceptions import ModelAuthenticationError
+from kern.models.openai.like import OpenAILike
+from kern.utils.log import log_debug
 
 # Default headers required by the GitHub Copilot API
 _COPILOT_HEADERS = {

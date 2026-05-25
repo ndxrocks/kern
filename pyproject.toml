@@ -1,7 +1,7 @@
 [project]
 name = "kern-ai"
-version = "0.1.0"
-description = "Agent framework optimized for small models — template-based structured output, JSON repair, and LaTeX protection."
+version = "0.1.1"
+description = "Agent framework for small models — template-based structured output, JSON repair, and workflow visualization."
 requires-python = ">=3.11"
 readme = "README.md"
 license = { file = "LICENSE" }

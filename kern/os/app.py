@@ -1410,9 +1410,9 @@ class AgentOS:
             port = int(env_port)
 
         if getenv("KERN_API_RUNTIME", "").lower() == "stg":
-            public_endpoint = "https://os-stg.agno.com/"
+            public_endpoint = "https://os-stg.kern.dev/"
         else:
-            public_endpoint = "https://os.agno.com/"
+            public_endpoint = "https://os.kern.dev/"
 
         # Create a terminal panel to announce OS initialization and provide useful info
         from rich.align import Align

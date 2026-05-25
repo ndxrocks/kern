@@ -1,13 +1,10 @@
 """
-Kern — Agno fork optimized for small models.
+Kern — Agent framework for small models.
 
-Replaces complex JSON Schema with simple fill-in-the-blanks templates
-that small models (2-4B parameters) can reliably follow.
+Small Models. Big Impact.
 
-Key differences from Agno:
-  - Template-based structured output (not JSON Schema)
-  - json_repair + LaTeX protection for malformed responses
-  - Targeted retry on validation failures
+Template-based structured output, JSON repair, LaTeX protection,
+and workflow visualization — so 1-7B models produce reliable results.
 """
 
 from importlib.metadata import PackageNotFoundError, version
@@ -15,6 +12,6 @@ from importlib.metadata import PackageNotFoundError, version
 try:
     __version__ = version("kern-ai")
 except PackageNotFoundError:
-    __version__ = "0.1.0"
+    __version__ = "0.1.1"
 
 __all__ = ["__version__"]
