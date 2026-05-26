@@ -1,37 +1,122 @@
 <div align="center" id="top">
-    <picture>
-      <source width="100" media="(prefers-color-scheme: dark)" srcset="kern/docs/assets/kern-dark.png">
-      <source width="100" media="(prefers-color-scheme: light)" srcset="kern/docs/assets/kern-light.png">
-      <img width="100" src="kern/docs/assets/kern-light.png" alt="Agno">
-    </picture>
+  <picture>
+    <source width="120" media="(prefers-color-scheme: dark)" srcset="kern/docs/assets/kern-dark.png">
+    <source width="120" media="(prefers-color-scheme: light)" srcset="kern/docs/assets/kern-light.png">
+    <img width="120" src="kern/docs/assets/kern-light.png" alt="Kern Logo">
+  </picture>
+
+### Small Models. Big Impact.
+
+Lightweight agent framework optimized for small language models (1B–7B).
+
+Kern replaces heavyweight JSON Schema prompting with lightweight fill-in-the-blanks templates so constrained models can reliably produce structured outputs.
+
+[Installation](#installation) •
+[Quick Start](#quick-start) •
+[Structured Output](#structured-output) •
+[Local Models](#local-models) •
+[Tools](#tools)
+
 </div>
 
-<p align="center">
-  Small Models. Big Impact.<br/>
-</p>
+---
 
-Agent framework for small models (1–7B parameters). Kern generates simple fill-in-the-blanks JSON templates instead of complex JSON Schema, so small models actually produce valid structured output.
+# Why Kern?
 
-## Install
+Most agent frameworks assume:
+- reliable structured outputs
+- large context windows
+- strong reasoning models
+- perfect tool-calling
+
+That works for frontier models.
+
+It breaks on smaller local models.
+
+Small models often struggle with:
+- malformed JSON
+- schema drift
+- nested structures
+- hallucinated fields
+- retry loops
+- token overhead
+
+Kern is designed specifically for constrained models by minimizing orchestration complexity.
+
+Instead of generating massive JSON schemas like:
+
+```json
+{
+  "$defs": {...},
+  "properties": {...},
+  "anyOf": [...],
+  "allOf": [...]
+}
+```
+
+Kern generates lightweight templates:
+
+```json
+{
+  "title": "string",
+  "rating": "integer",
+  "summary": "string"
+}
+```
+
+This dramatically reduces formatting pressure while preserving structured outputs.
+
+---
+
+# Designed For
+
+- Local LLMs
+- Ollama
+- llama.cpp
+- LM Studio
+- Edge AI systems
+- Low-VRAM deployments
+- Laptop-scale agents
+- Efficient inference pipelines
+
+---
+
+# Features
+
+- Lightweight structured outputs
+- Automatic JSON repair
+- Multi-agent workflows
+- Tool calling
+- Streaming responses
+- Knowledge bases
+- Persistent memory
+- OpenAI-compatible providers
+- Local-model friendly architecture
+
+---
+
+# Installation
 
 ```bash
 pip install kern-ai
 ```
 
-With extras:
+## Extras
 
 ```bash
-pip install kern-ai[openai]       # OpenAI-compatible models
-pip install kern-ai[ollama]       # Ollama
-pip install kern-ai[anthropic]    # Claude
-pip install kern-ai[google]       # Gemini
-pip install kern-ai[ddg,mcp]      # DuckDuckGo search + MCP tools
-pip install kern-ai[all]          # Everything
+pip install kern-ai[openai]
+pip install kern-ai[ollama]
+pip install kern-ai[anthropic]
+pip install kern-ai[google]
+pip install kern-ai[ddg,mcp]
+pip install kern-ai[all]
 ```
 
-## Quick Start
+---
 
-### Basic Agent
+# Quick Start
+
+## Basic Agent
 
 ```python
 from kern.agent import Agent
@@ -43,352 +128,170 @@ agent = Agent(
 )
 
 result = agent.run("What is the capital of France?")
-print(result.content)  # "Paris"
+print(result.content)
 ```
 
-### Structured Output
+---
+
+# Structured Output
+
+## Simple Schema
 
 ```python
-from pydantic BaseModel, Field
+from pydantic import BaseModel
 from kern.agent import Agent
-from kern.models.openai import OpenAIChat
-
 
 class BookReview(BaseModel):
-    title: str = Field(description="Book title")
-    rating: int = Field(description="Rating out of 5")
-    summary: str = Field(description="One-paragraph summary")
+    title: str
+    rating: int
+    summary: str
     recommended: bool
 
-
 agent = Agent(
-    model=OpenAIChat(id="gpt-4o-mini"),
+    model=model,
     output_schema=BookReview,
 )
 
-result = agent.run("Review 'The Hitchhiker's Guide to the Galaxy'")
+result = agent.run("Review Dune by Frank Herbert")
 print(result.content)
-# BookReview(
-#     title="The Hitchhiker's Guide to the Galaxy",
-#     rating=5,
-#     summary="...",
-#     recommended=True
-# )
 ```
 
-### Running with Local Models
+## Template Sent to the Model
 
-Kern shines with local small models via OpenAI-compatible servers (llama.cpp, LM Studio, vLLM, Ollama):
+```json
+{
+  "title": "string",
+  "rating": "integer",
+  "summary": "string",
+  "recommended": "boolean"
+}
+```
+
+Instead of deeply nested JSON Schema definitions.
+
+---
+
+# Local Models
+
+Kern is designed to work well with small local models through OpenAI-compatible inference servers.
+
+Compatible with:
+- Ollama
+- llama.cpp
+- LM Studio
+- vLLM
+- OpenWebUI backends
 
 ```python
 from kern.agent import Agent
 from kern.models.openai import OpenAIChat
 
-# Connect to any OpenAI-compatible local server
 model = OpenAIChat(
-    id="local-model",                    # model name (ignored by some servers)
-    base_url="http://127.0.0.1:8080/v1", # your local server
-    api_key="not-needed",                # placeholder for local inference
+    id="local-model",
+    base_url="http://127.0.0.1:8080/v1",
+    api_key="not-needed",
 )
 
-agent = Agent(model=model, output_schema=BookReview)
-result = agent.run("Review 'Dune' by Frank Herbert")
+agent = Agent(model=model)
 ```
 
-## Models
+---
 
-Kern supports any OpenAI-compatible model provider:
+# JSON Repair
 
-| Provider              | Install           | Usage                                           |
-| --------------------- | ----------------- | ----------------------------------------------- |
-| OpenAI                | `kern-ai[openai]`    | `from kern.models.openai import OpenAIChat`     |
-| Anthropic             | `kern-ai[anthropic]` | `from kern.models.anthropic import Claude`      |
-| Google Gemini         | `kern-ai[google]`    | `from kern.models.google import Gemini`         |
-| Ollama                | `kern-ai[ollama]`    | `from kern.models.ollama import Ollama`         |
-| Groq                  | `kern-ai[groq]`      | `from kern.models.groq import Groq`             |
-| Cerebras              | `kern-ai[cerebras]`  | `from kern.models.cerebras import Cerebras`     |
-| Mistral               | `kern-ai[mistral]`   | `from kern.models.mistral import MistralChat`   |
-| Azure                 | `kern-ai[azure]`     | `from kern.models.azure import AzureOpenAIChat` |
-| Any OpenAI-compatible | —                 | `OpenAIChat(base_url="...", api_key="...")`     |
+Small models frequently generate malformed JSON.
 
-## Agents
-
-### System Instructions
+Kern automatically repairs:
+- trailing commas
+- broken escapes
+- markdown-wrapped JSON
+- partial formatting issues
+- LaTeX escape problems
 
 ```python
-agent = Agent(
-    model=model,
-    instructions=[
-        "You are a math tutor for high school students.",
-        "Always show your work step by step.",
-        "Use LaTeX notation for equations.",
-    ],
-)
+from kern.repair import extract_json
+
+data = extract_json("""
+```json
+{"title": "Hello", "items": [1,2,3,]}
+```
+""")
 ```
 
-### Agent with Tools
+---
+
+# Tools
 
 ```python
-from kern.agent import Agent
-from kern.tools.duckduckgo import DuckDuckGoTools
-
-agent = Agent(
-    model=model,
-    tools=[DuckDuckGoTools()],
-    instructions="Search the web to answer questions.",
+from kern.tools import (
+    DuckDuckGoTools,
+    CalculatorTools,
+    PythonTools,
+    FileTools,
 )
-
-result = agent.run("What's the latest news about quantum computing?")
 ```
 
-### Agent Teams
+Supports:
+- DuckDuckGo
+- Tavily
+- Exa
+- Firecrawl
+- GitHub
+- MCP
+- YFinance
+- Custom tools
+
+---
+
+# Multi-Agent Teams
 
 ```python
 from kern.agent import Agent
 from kern.team import Team
 
-researcher = Agent(name="Researcher", model=model, tools=[DuckDuckGoTools()])
-writer = Agent(name="Writer", model=model, instructions="Write clear, engaging prose.")
+researcher = Agent(name="Researcher", model=model)
+writer = Agent(name="Writer", model=model)
 
 team = Team(
     name="Content Team",
-    mode="coordinate",   # agents collaborate
     members=[researcher, writer],
 )
 
-result = team.run("Write a brief on AI safety")
+result = team.run("Write a report on AI safety")
 ```
 
-### Multi-turn Conversations
+---
+
+# Streaming
 
 ```python
-agent = Agent(model=model)
-
-# Each call continues the conversation
-r1 = agent.run("My name is Alice")
-r2 = agent.run("What's my name?")  # remembers "Alice"
+for chunk in agent.run("Explain quantum computing", stream=True):
+    print(chunk.content, end="")
 ```
 
-### Streaming
+---
 
-```python
-agent = Agent(model=model)
+# Philosophy
 
-for chunk in agent.run("Explain photosynthesis", stream=True):
-    print(chunk.content, end="", flush=True)
-```
+Kern is built around a simple idea:
 
-## Structured Output (Templates)
+> Small models should still be capable of reliable agent workflows.
 
-This is where Kern differs from other frameworks. Instead of sending complex JSON Schema (`$defs`, `properties`, `anyOf`, `allOf`), Kern generates flat fill-in-the-blanks templates.
+Instead of assuming more intelligence,
+Kern reduces orchestration complexity.
 
-### Simple Models
+---
 
-```python
-class Recipe(BaseModel):
-    name: str
-    ingredients: list[str]
-    cook_time_minutes: int
-```
+# Acknowledgements
 
-Template sent to the model:
+Kern originally started as an experimental fork inspired by Agno.
 
-```json
-{ "name": "string", "ingredients": ["string"], "cook_time_minutes": "integer" }
-```
+The project evolved into a separate framework focused specifically on constrained-model orchestration, lightweight structured outputs, and local-model reliability.
 
-### Nested Models
+Huge credit to the Agno ecosystem and contributors for the original inspiration.
 
-```python
-class Address(BaseModel):
-    street: str
-    city: str
-    zip_code: str
+---
 
-class Person(BaseModel):
-    name: str
-    address: Address
-```
-
-Template:
-
-```json
-{
-  "name": "string",
-  "address": { "street": "string", "city": "string", "zip_code": "string" }
-}
-```
-
-### Union Types
-
-```python
-from typing import Union
-
-class TextBlock(BaseModel):
-    text: str
-
-class CodeBlock(BaseModel):
-    code: str
-    language: str
-
-class Page(BaseModel):
-    blocks: list[Union[TextBlock, CodeBlock]]
-```
-
-Template — both alternatives shown flat:
-
-```json
-{ "blocks": [{ "text": "string" }, { "code": "string", "language": "string" }] }
-```
-
-### Literal Enums
-
-```python
-from typing import Literal
-
-class Article(BaseModel):
-    title: str
-    status: Literal["draft", "published", "archived"]
-```
-
-Template:
-
-```json
-{"title": "string", "status": "draft"|"published"|"archived"}
-```
-
-### Field Descriptions
-
-```python
-class Quiz(BaseModel):
-    question: str = Field(description="The quiz question")
-    options: list[str] = Field(description="4 multiple choice options")
-    answer: int = Field(description="Index of the correct option (0-3)")
-```
-
-Template includes a separate descriptions block so the model knows what each field means.
-
-## JSON Repair
-
-Small models produce malformed JSON — missing quotes, trailing commas, broken escapes. Kern fixes it automatically:
-
-````python
-from kern.repair import extract_json
-
-# Handles markdown code blocks, leading text, LaTeX, malformed JSON
-data = extract_json("""
-Here's the result:
-```json
-{"title": "Hello World", "items": [1, 2, 3,]}
-````
-
-""")
-
-# {"title": "Hello World", "items": [1, 2, 3]}
-
-````
-
-### LaTeX Protection
-
-When models output math like `\frac{a}{b}`, JSON parsers break because `\f` is a form-feed escape character. Kern doubles backslashes before parsing:
-
-```python
-from kern.repair import extract_json
-
-data = extract_json('{"formula": "\\frac{1}{2} + \\theta"}')
-# Parsed correctly — LaTeX preserved
-````
-
-## Tools
-
-```python
-from kern.tools import (
-    DuckDuckGoTools,    # pip install kern-ai[ddg]
-    ExaTools,           # pip install kern-ai[exa]
-    FirecrawlTools,     # pip install kern-ai[firecrawl]
-    TavilyTools,        # pip install kern-ai[tavily]
-    GitHubTools,        # pip install kern-ai[github]
-    MCPTools,           # pip install kern-ai[mcp]
-    YFinanceTools,      # pip install kern-ai[yfinance]
-    NewspaperTools,     # pip install kern-ai[newspaper]
-    CalculatorTools,    # built-in
-    PythonTools,        # built-in
-    FileTools,          # built-in
-)
-```
-
-### Custom Tools
-
-```python
-from kern.tools import Toolkit
-
-class MyTools(Toolkit):
-    def __init__(self):
-        super().__init__(name="my_tools")
-        self.register(self.get_weather)
-
-    def get_weather(self, city: str) -> str:
-        """Get the current weather for a city."""
-        return f"The weather in {city} is sunny and 72°F"
-
-agent = Agent(model=model, tools=[MyTools()])
-```
-
-## Storage
-
-```python
-from kern.agent import Agent
-from kern.storage.agent.postgres import PgAgentStorage  # kern-ai[postgres]
-
-agent = Agent(
-    model=model,
-    storage=PgAgentStorage(
-        table_name="agent_sessions",
-        db_url="postgresql://localhost:5432/mydb",
-    ),
-)
-```
-
-Supported: Postgres, SQLite, Redis, MongoDB, GCS, Firestore, MySQL.
-
-## Knowledge Bases
-
-```python
-from kern.knowledge.text import TextKnowledgeBase
-from kern.vectordb.pgvector import PgVector  # kern-ai[pgvector]
-
-knowledge = TextKnowledgeBase(
-    vector_db=PgVector(
-        table_name="recipes",
-        db_url="postgresql://localhost:5432/mydb",
-    ),
-)
-
-agent = Agent(model=model, knowledge=knowledge)
-agent.knowledge.load(references=["path/to/recipes.txt"])
-```
-
-## Workflows
-
-```python
-from kern.workflows import Workflow
-
-class ResearchWorkflow(Workflow):
-    research_step: Agent = Field(...)
-    write_step: Agent = Field(...)
-
-    def run(self, topic: str):
-        research = self.research_step.run(f"Research {topic}")
-        article = self.write_step.run(f"Write about: {research.content}")
-        return article
-
-wf = ResearchWorkflow(
-    research_step=Agent(name="Researcher", tools=[DuckDuckGoTools()]),
-    write_step=Agent(name="Writer"),
-)
-result = wf.run(topic="renewable energy")
-```
-
-## License
+# License
 
 Apache License 2.0
